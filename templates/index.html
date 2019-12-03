@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Topic Recommender</title>
+{% endblock %}
+
+{% block body %}
+
+    <div class="content">
+    
+    <h1 style="text-align: center">Topic Recommender</h1>
+    
+    <div class="form">
+            <form action="/" method="POST">			
+                <input type="text" name="content" id="content">
+				<input type="submit" value="Search" id = "search">				
+            </form>
+        </div>
+
+    <table>
+        <tr>
+            <th>Output</th>
+        </tr>
+        {% for task in tasks %}
+            <tr>
+                <td><a href="{{url_for('paper',val = task['arc'])}}">{{ task["arc"] }}</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    
+</div>
+{% endblock %}
