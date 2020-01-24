@@ -18,13 +18,21 @@
         </div>
 
     <table>
-        <tr>
-            <th>Output</th>
-        </tr>
+        
         {% for task in tasks %}
-            <tr>
-                <td><a href="{{url_for('paper',val = task['arc'])}}">{{ task["arc"] }}</a></td>
-            </tr>
+				{% if "err" in task%}
+				<p>Did You Mean <a href="{{url_for('index',val2 = tasks["err"])}}">{{ tasks["err"] }}</a></p>
+				{% endif %}
+				{% if 'topics' in task%}
+				<tr>
+					<th>Output</th>
+				</tr>
+				{% for value in task["topics"]%}
+				<tr>
+					<td><a href="{{url_for('paper',val = value)}}">{{ value }}</a></td>
+				</tr>
+				{% endfor %}
+				{% endif %}
         {% endfor %}
     </table>
 
