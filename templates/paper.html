@@ -6,29 +6,51 @@
 
 {% block body %}
 
-    <div class="paper-content">
-    
-    <h1 style="text-align: center">Highly Cited Papers</h1>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+	  <a class="navbar-brand" href="#">Topic Recommender System</a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	  </button>
 
-    <table>
+	  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+		<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+		  <li class="nav-item active">
+			<a class="nav-link" href="/">Topic Search<span class="sr-only">(current)</span></a>
+		  </li>
+		  <li class="nav-item">
+			<a class="nav-link" href="/abstract">Abstract search</a>
+		  </li>
+		</ul>
+	  </div>
+	</nav>
+    <div class="container">
+		<div class="row justify-content-md-center">
+    <table class="table">
+		<thead>
         <tr>
-            <th>Paper id</th>
-            <th>Title</th>
-            <th>Citation count</th>
-            <th>DOI</th>
+            <th scope="col">Paper id</th>
+            <th scope="col">Title</th>
+            <th scope="col">Citation count</th>
+            <th scope="col">Paper Links</th>
         </tr>
+		</thead>
         {% for task in tasks %}
             {% for val in task['paper_data']%}
             <tr>
                 <td>{{ val["id"] }}</td>
                 <td>{{ val["title"] }}</td>
                 <td>{{ val["n_citation"] }}</td>
-                <td><a href="https://www.doi.org/{{val['doi']}}">{{ val["doi"] }}</a></td>
+				{% if val['doi'] not in [None,""] %}
+                <td><a href="https://www.doi.org/{{ val['doi'] }}">Go To Page {{ val['doi'] }}</a></td>
+				{% else %}
+				<td></td>
+				{% endif %}
             </tr>
             {% endfor %}
         {% endfor %}
     </table>
 
-    <a href="/" style="text-align: center">Go back to homepage</a>
+    <a href="/" style="text-align: center" type="button" class="btn btn-primary btn-lg btn-block">Go back to homepage</a>
+	</div>
 </div>
 {% endblock %}

@@ -5,37 +5,53 @@
 {% endblock %}
 
 {% block body %}
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	  <a class="navbar-brand" href="#">Topic Recommender System</a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	  </button>
 
-    <div class="content">
-    
-    <h1 style="text-align: center">Topic Recommender</h1>
-    
-    <div class="form">
-            <form action="/" method="POST">			
-                <input type="text" name="content" id="content">
-				<input type="submit" value="Search" id = "search">				
-            </form>
-        </div>
-
-    <table>
-        
-        {% for task in tasks %}
-				{% if "err" in task%}
-				<p>Did You Mean <a href="{{url_for('index',val2 = tasks["err"])}}">{{ tasks["err"] }}</a></p>
-				{% endif %}
-				{% if 'topics' in task%}
-				<tr>
-					<th>Output</th>
-				</tr>
-				{% for value in task["topics"]%}
-				<tr>
-					<td><a href="{{url_for('paper',val = value)}}">{{ value }}</a></td>
-				</tr>
+	  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+		<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+		  <li class="nav-item active">
+			<a class="nav-link" href="/">Topic Search<span class="sr-only">(current)</span></a>
+		  </li>
+		  <li class="nav-item">
+			<a class="nav-link" href="/abstract">Abstract search</a>
+		  </li>
+		</ul>
+	  </div>
+	</nav>
+    <div class="container">
+		<div class="row justify-content-md-center">
+				<form action="/" method="POST" class="input-group mw-100 m-3 p-3 shadow-sm">			
+					<input type="text" name="content" id="content" class="form-control m-1" placeholder="Enter topic name here">
+					<input type="submit" value="Search" id = "search" class=" input-group-append btn btn-primary">				
+				</form>
+				
+				<table class="table">
+				{% for task in tasks %}
+					{% if "err" in task%}
+						<p>Did You Mean <a href="{{url_for('index',val2 = tasks["err"])}}">{{ tasks["err"] }}</a></p>
+					{% endif %}
+					{% if 'topics' in task%}
+						 <thead class="thead-dark">
+							<tr>
+								<th scope="col-1">#</th>
+								<th scope="col-7">Topics</th>
+								<th scope="col-4">Papers</th>
+							</tr>
+						</thead>
+						{% for value in task["topics"] %}
+							<tr>
+								<th scope="row">{{ loop.index0+1 }}</th>
+								<td>{{ value }}</a></td>
+								<td><a href="{{url_for('paper',val = value)}}">View relevant papers</a></td>
+							</tr>
+						{% endfor %}
+					{% endif %}
 				{% endfor %}
-				{% endif %}
-        {% endfor %}
-    </table>
-
-    
+				</table>
+    </div>
 </div>
 {% endblock %}
