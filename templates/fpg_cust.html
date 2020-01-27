@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Topic Recommender</title>
+{% endblock %}
+
+{% block body %}
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	  <a class="navbar-brand" href="/">Topic Recommender System</a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	  </button>
+
+	  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+		<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+		  <li class="nav-item">
+			<a class="nav-link" href="/">Topic Search</a>
+		  </li>
+		  <li class="nav-item active">
+			<a class="nav-link" href="/abstract">Abstract search<span class="sr-only">(current)</span></a>
+		  </li>
+		</ul>
+	  </div>
+	</nav>
+    <div class="container">
+		<div class="row justify-content-md-center">
+			<div class="col-8">
+				<form action="/abstract" method="POST" >
+					<textarea style="height: 100px" type="text" name="abs_content" id="abs_content" placeholder="Enter abstract here" class="shadow-sm input-group input-group-lg mw-100 mb-3 mt-3"></textarea>
+					<input type="submit" value="Search" id = "search" class="btn btn-primary btn-lg btn-block mw-100 mb-3">				
+				</form>
+				<ul class="list-group">
+				{% for task in tasks %}
+						{% for value in tasks["topics"] %}
+							<li class="list-group-item">{{ value }}</li>
+						{% endfor %}
+				{% endfor %}
+				</ul>
+			</div>
+    </div>
+</div>
+{% endblock %}

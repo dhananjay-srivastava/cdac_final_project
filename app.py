@@ -21,6 +21,8 @@ from sklearn.svm import LinearSVC
 from sklearn.multioutput import MultiOutputClassifier
 clf_file = open('classifier','rb')
 
+r_file = open('rule_df2','rb')
+
 import pickle
 
 corpus = pickle.load(c_file)
@@ -28,12 +30,14 @@ origin = pickle.load(o_file)
 terms = pickle.load(t_file)
 hv = pickle.load(hv_file)
 clf = pickle.load(clf_file)
+rules = pickle.load(r_file)
 
 c_file.close()
 o_file.close()
 t_file.close()
 hv_file.close()
 clf_file.close()
+r_file.close()
 
 from nltk.corpus import stopwords
 stop=stopwords.words('english')
@@ -53,6 +57,11 @@ def generate_predictions(abstract,stop=stop,topics=topics):
 	y_pred_df = pd.DataFrame(y_pred,columns=topics)
 	return list(y_pred_df.columns[(y_pred_df == 1).iloc[0]])
 
+def generate_fpg_predictions(topic, rules=rules):
+        out = rules[ (rules.antecedents == {topic}) & (rules.consequents_len == 1) ].sort_values(by='support',ascending=False).head(10)
+        out['consequents'] = out['consequents'].apply(lambda x: list(x)[0]).astype("unicode")
+        return out[['consequents','support','confidence']].values.tolist()
+     
 @app.route('/', methods=['POST','GET'])
 
 def index():
@@ -90,5 +99,16 @@ def abstract():
     else:
         return render_template('abstract.html', tasks = [])
 
+@app.route('/fpgrowth',methods=['POST','GET'])
+
+def fpgrowth():
+    if request.method == 'POST':
+        search = request.form['fpg_content']
+        task = {}
+        task["topics"] = generate_fpg_predictions(search)
+        return render_template('fpgrowth.html', tasks = task)
+    else:
+        return render_template('fpgrowth.html', tasks = [])
+        
 if __name__=="__main__":
     app.run(debug=True)

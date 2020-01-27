@@ -6,7 +6,7 @@
 
 {% block body %}
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-	  <a class="navbar-brand" href="#">Topic Recommender System</a>
+	  <a class="navbar-brand" href="/">Topic Recommender System</a>
 	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	  </button>
@@ -19,12 +19,15 @@
 		  <li class="nav-item">
 			<a class="nav-link" href="/abstract">Abstract search</a>
 		  </li>
+		  <li class="nav-item ">
+			<a class="nav-link" href="/fpgrowth">FPGrowth search</a>
+		  </li>
 		</ul>
 	  </div>
 	</nav>
     <div class="container">
 		<div class="row justify-content-md-center">
-				<form action="/" method="POST" class="input-group mw-100 m-3 p-3 shadow-sm">			
+				<form action="/" method="POST" class="input-group mw-100 mb-3 mt-3 p-3 shadow-sm">			
 					<input type="text" name="content" id="content" class="form-control m-1" placeholder="Enter topic name here">
 					<input type="submit" value="Search" id = "search" class=" input-group-append btn btn-primary">				
 				</form>
@@ -45,7 +48,7 @@
 						{% for value in task["topics"] %}
 							<tr>
 								<th scope="row">{{ loop.index0+1 }}</th>
-								<td>{{ value }}</a></td>
+								<td>{{ value }}</td>
 								<td><a href="{{url_for('paper',val = value)}}">View relevant papers</a></td>
 							</tr>
 						{% endfor %}

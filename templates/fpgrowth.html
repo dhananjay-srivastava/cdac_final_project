@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Topic Recommender</title>
+{% endblock %}
+
+{% block body %}
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	  <a class="navbar-brand" href="/">Topic Recommender System</a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	  </button>
+
+	  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+		<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+		  <li class="nav-item">
+			<a class="nav-link" href="/">Topic Search</a>
+		  </li>
+		  <li class="nav-item">
+			<a class="nav-link" href="/abstract">Abstract search</a>
+		  </li>
+		  <li class="nav-item active">
+			<a class="nav-link" href="/fpgrowth">FPGrowth search<span class="sr-only">(current)</span></a>
+		  </li>
+		</ul>
+	  </div>
+	</nav>
+    <div class="container">
+		<div class="row justify-content-md-center">
+			<div class="col-8">
+				<form action="/fpgrowth" method="POST"  class="input-group mw-100 mb-3 mt-3 p-3 shadow-sm">
+					<input type="text" name="fpg_content" id="fpg_content" class="form-control m-1" placeholder="Enter topic name here"></input>
+					<input type="submit" value="Search" id = "search" class="input-group-append btn btn-primary m-1"></input>				
+				</form>
+				<table class="table">
+					{% for task in tasks %}
+						{% if 'topics' in task%}
+						<tr>
+							<thead class="thead-dark">
+								<tr>
+									<th scope="col-1">#</th>
+									<th scope="col-5">Topics</th>
+									<th scope="col-3">Support</th>
+									<th scope="col-3">Confidence</th>
+								</tr>
+							</thead>
+						</tr>
+						<tbody>
+						{% for values in tasks["topics"] %}
+							<tr>
+								<th scope="row">{{ loop.index0+1 }}</th>
+								{% for value in values%}
+									<td>{{ value }}</td>
+								{% endfor %}
+							</tr>
+						{% endfor %}
+						</tbody>
+						{% endif %}
+					{% endfor %}
+				</table>
+			</div>
+    </div>
+</div>
+{% endblock %}
