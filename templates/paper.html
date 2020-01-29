@@ -14,15 +14,19 @@
 
 	  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
 		<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-		  <li class="nav-item active">
-			<a class="nav-link" href="/">Topic Search<span class="sr-only">(current)</span></a>
+		  <li class="nav-item active dropdown">
+			 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				Topic Search
+			</a>
+			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+				<a class="nav-link" href="/">Normal Search</a>
+				<a class="nav-link" href="/fpgrowth">Advanced search</a>
+			</div>
 		  </li>
 		  <li class="nav-item">
 			<a class="nav-link" href="/abstract">Abstract search</a>
 		  </li>
-		  <li class="nav-item ">
-			<a class="nav-link" href="/fpgrowth">FPGrowth search</a>
-		  </li>
+		  
 		</ul>
 	  </div>
 	</nav>
@@ -31,22 +35,22 @@
     <table class="table">
 		<thead>
         <tr>
-            <th scope="col">Paper id</th>
+            <th scope="col">#</th>
             <th scope="col">Title</th>
-            <th scope="col">Citation count</th>
+            <th scope="col">Citation Count</th>
             <th scope="col">Paper Links</th>
         </tr>
 		</thead>
         {% for task in tasks %}
             {% for val in task['paper_data']%}
             <tr>
-                <td>{{ val["id"] }}</td>
+                <td>{{ loop.index0 + 1 }}</td>
                 <td>{{ val["title"] }}</td>
                 <td>{{ val["n_citation"] }}</td>
 				{% if 'doi' in val %}
                 <td><a href="https://www.doi.org/{{ val['doi'] }}">Go To Page</a></td>
 				{% else %}
-				<td></td>
+				<td><a href="https://www.google.com/search?q={{ '+'.join(val["title"].split()) }}">Search on Google</a></td>
 				{% endif %}
             </tr>
             {% endfor %}

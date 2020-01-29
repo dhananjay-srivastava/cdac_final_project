@@ -3,7 +3,8 @@ from flask_pymongo import PyMongo
 
 
 app = Flask(__name__)
-mongo = PyMongo(app, uri ="mongodb://localhost:27017/project")
+app.config["MONGO_URI"] = "mongodb://admin:system123@project-shard-00-00-aavo9.gcp.mongodb.net:27017,project-shard-00-01-aavo9.gcp.mongodb.net:27017,project-shard-00-02-aavo9.gcp.mongodb.net:27017/project?ssl=true&replicaSet=project-shard-0&authSource=admin&retryWrites=true&w=majority"
+mongo = PyMongo(app)
 
 c_file = open('corpus_file','rb')
 o_file = open('origin_file','rb')
@@ -58,9 +59,9 @@ def generate_predictions(abstract,stop=stop,topics=topics):
 	return list(y_pred_df.columns[(y_pred_df == 1).iloc[0]])
 
 def generate_fpg_predictions(topic, rules=rules):
-        out = rules[ (rules.antecedents == {topic}) & (rules.consequents_len == 1) ].sort_values(by='support',ascending=False).head(10)
+        out = rules[ (rules.antecedents == {topic}) & (rules.consequents_len == 1) ].sort_values(by='confidence',ascending=False).head(20)
         out['consequents'] = out['consequents'].apply(lambda x: list(x)[0]).astype("unicode")
-        return out[['consequents','support','confidence']].values.tolist()
+        return out[['consequents','confidence']].values.tolist()
      
 @app.route('/', methods=['POST','GET'])
 
@@ -69,7 +70,12 @@ def index():
         form_content=request.form['content']
         if form_content not in origin and form_content != None:
             task = {}
-            task['err'] = origin[corpus.index(terms.get(form_content.lower())[0][1])]
+            if form_content.lower() in corpus:
+                search_corrected = origin[corpus.index(form_content.lower())]
+                task = mongo.db.topic_data.find({'_id':search_corrected},{'_id':0})
+                return render_template('index.html', tasks = task)
+            else:
+                task['err'] = origin[corpus.index(terms.get(form_content.lower())[0][1])]
             return render_template('index.html', tasks = task)
         else:
             task = mongo.db.topic_data.find({'_id':form_content},{'_id':0})
@@ -85,7 +91,7 @@ def index():
 
 def paper():
     search = request.args.get('val')
-    task = mongo.db.paper.find({'_id':search})
+    task = mongo.db.paper_data.find({'_id':search})
     return render_template('paper.html', tasks = task)
 
 @app.route('/abstract',methods=['POST','GET'])

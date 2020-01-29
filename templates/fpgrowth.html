@@ -13,14 +13,17 @@
 
 	  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
 		<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-		  <li class="nav-item">
-			<a class="nav-link" href="/">Topic Search</a>
+		  <li class="nav-item active dropdown">
+			 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				Topic Search
+			</a>
+			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+				<a class="nav-link" href="/">Normal Search</a>
+				<a class="nav-link active" href="/fpgrowth">Advanced search<span class="sr-only">(current)</span></a>
+			</div>
 		  </li>
 		  <li class="nav-item">
 			<a class="nav-link" href="/abstract">Abstract search</a>
-		  </li>
-		  <li class="nav-item active">
-			<a class="nav-link" href="/fpgrowth">FPGrowth search<span class="sr-only">(current)</span></a>
 		  </li>
 		</ul>
 	  </div>
@@ -40,8 +43,7 @@
 								<tr>
 									<th scope="col-1">#</th>
 									<th scope="col-5">Topics</th>
-									<th scope="col-3">Support</th>
-									<th scope="col-3">Confidence</th>
+									<th scope="col-3">Relevance (%)</th>
 								</tr>
 							</thead>
 						</tr>
@@ -49,9 +51,8 @@
 						{% for values in tasks["topics"] %}
 							<tr>
 								<th scope="row">{{ loop.index0+1 }}</th>
-								{% for value in values%}
-									<td>{{ value }}</td>
-								{% endfor %}
+								<td>{{ values[0] }}</td>
+								<td>{{ (100*values[1])|round(2) }}</td>
 							</tr>
 						{% endfor %}
 						</tbody>

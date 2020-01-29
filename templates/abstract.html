@@ -13,15 +13,19 @@
 
 	  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
 		<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-		  <li class="nav-item">
-			<a class="nav-link" href="/">Topic Search</a>
+		  <li class="nav-item active dropdown">
+			 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				Topic Search
+			</a>
+			<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+				<a class="nav-link" href="/">Normal Search</a>
+				<a class="nav-link" href="/fpgrowth">Advanced search</a>
+			</div>
 		  </li>
 		  <li class="nav-item active">
 			<a class="nav-link" href="/abstract">Abstract search<span class="sr-only">(current)</span></a>
 		  </li>
-		  <li class="nav-item ">
-			<a class="nav-link" href="/fpgrowth">FPGrowth search</a>
-		  </li>
+		  
 		</ul>
 	  </div>
 	</nav>
