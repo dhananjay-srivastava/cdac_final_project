@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_pymongo import PyMongo
 
+import nltk
+from nltk.corpus import stopwords
+stop=stopwords.words('english')
 
 app = Flask(__name__)
 app.config["MONGO_URI"] = "mongodb://admin:system123@project-shard-00-00-aavo9.gcp.mongodb.net:27017,project-shard-00-01-aavo9.gcp.mongodb.net:27017,project-shard-00-02-aavo9.gcp.mongodb.net:27017/project?ssl=true&replicaSet=project-shard-0&authSource=admin&retryWrites=true&w=majority"
@@ -40,8 +43,7 @@ hv_file.close()
 clf_file.close()
 r_file.close()
 
-from nltk.corpus import stopwords
-stop=stopwords.words('english')
+
 
 topics = []
 with open(r'F:\topic_data.txt','r') as file:
