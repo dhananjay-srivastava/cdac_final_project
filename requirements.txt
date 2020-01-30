@@ -1,0 +1,7 @@
+pandas==0.25.3
+nltk==3.4.5
+Flask_PyMongo==2.3.0
+Flask==1.1.1
+fuzzyset==0.0.19
+scikit_learn==0.22.1
+gunicorn==20.0.4
